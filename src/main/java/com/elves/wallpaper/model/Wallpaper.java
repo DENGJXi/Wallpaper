@@ -1,12 +1,16 @@
 package com.elves.wallpaper.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Wallpaper {
-    private Long id;                    //壁纸id
+    private Long id;                    //壁纸UID
     private String title;               //壁纸标题
     private String description;         //壁纸描述
     private String category;            //壁纸分类

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 
@@ -21,6 +20,10 @@ public class WallpaperController {
     @Autowired
     private WallpaperMapper wallpaperMapper;
 
+    /**
+     * 查询壁纸表中所有壁纸
+     * @return
+     */
     @GetMapping
     public Result<List<Wallpaper>> list(){
         List<Wallpaper> list = wallpaperMapper.findAll();

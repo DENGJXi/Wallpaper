@@ -5,7 +5,7 @@ spring:
   application:
     name: wallpaper
   datasource:
-    url: jdbc:mysql://localhost:3306/wallpaper_db?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/wallpaper_db?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,3 +15,7 @@ mybatis:
   type-aliases-package: com.elves.wallpaper.model # 这样 XML 里 type 就可以只写 Wallpaper
   configuration:
     map-underscore-to-camel-case: true
+
+elves:
+  jwt:
+    SIGN_KEY: elveswallpaperwebproject1145143502345451454352185
