@@ -12,12 +12,17 @@
         <result property="title" column="title"/>
         <result property="description" column="description"/>
         <result property="category" column="category"/>
-        <!-- 注意：你原来的 SQL 中 thumbnail_url 拼写成了 tumbnailUrl，这里修正为 thumbnail_url -->
         <result property="thumbnailUrl" column="thumbnail_url"/>
         <result property="fileUrl" column="file_url"/>
         <result property="hits" column="hits"/>
         <result property="createTime" column="create_time"/>
     </resultMap>
+
+    <update id="updateHitCount">
+        update wallpaper
+        set hits = hits + #{offset}
+        where id = #{wallpaperId}
+    </update>
 
     <!-- 查询所有壁纸 -->
     <select id="findAll" resultMap="WallpaperResultMap">
@@ -32,5 +37,6 @@
             create_time
         FROM wallpaper
     </select>
+
 
 </mapper>

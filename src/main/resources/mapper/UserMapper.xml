@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 必须对应你的 Mapper 接口全限定名 -->
+<mapper namespace="com.elves.wallpaper.mapper.UserMapper">
+
+    <resultMap id="UserResultMap" type="com.elves.wallpaper.model.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="avatar" column="avatar"/>
+        <result property="nickname" column="nickname"/>
+        <result property="bio"  column="bio"/>
+        <result property="email" column="email"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <update id="updateUser">
+        update user
+        <set>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="bio != null">bio = #{bio},</if>
+            <if test="password != null">password = #{password},</if>
+        </set>
+        <where>
+            <choose>
+                <when test="id != null">
+                    id = #{id}
+                </when>
+                <otherwise>
+                    email = #{email}
+                </otherwise>
+            </choose>
+        </where>
+    </update>
+
+</mapper>

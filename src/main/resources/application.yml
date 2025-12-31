@@ -1,14 +1,42 @@
 server:
   port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
 
 spring:
   application:
     name: wallpaper
+  data:
+    redis:
+        host: localhost
+        port: 6379
+        database: 2
   datasource:
     url: jdbc:mysql://localhost:3306/wallpaper_db?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: 1848209240@qq.com
+    password: elnneiczvtkxdihd
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          # 465 端口只需要开启 ssl
+          ssl:
+            enable: true
+          # 必须指定 SocketFactory，否则某些环境无法建立 SSL 连接
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: false
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml  # 告诉 MyBatis 去哪里找 XML

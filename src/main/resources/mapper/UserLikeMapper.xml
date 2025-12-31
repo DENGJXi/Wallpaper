@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 必须对应你的 Mapper 接口全限定名 -->
+<mapper namespace="com.elves.wallpaper.mapper.UserLikeMapper">
+
+    <resultMap id="AuthResultMap" type="com.elves.wallpaper.model.UserLike">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="wallpaperId" column="wallpaper_id"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+    <insert id="insert" >
+        insert into user_like(user_id,wallpaper_id)
+        values(#{userId},#{wallpaperId})
+    </insert>
+
+    <delete id="delete">
+        delete from user_like
+        where user_id = #{userId} and wallpaper_id = #{wallpaperId}
+    </delete>
+
+    <select id="checkExists" resultType="java.lang.Boolean">
+        select count(*)
+        from user_like
+        where user_id = #{userId} and wallpaper_id = #{wallpaperId}
+    </select>
+
+    <select id="findMyLikes" resultType="com.elves.wallpaper.model.Wallpaper">
+        select w.*
+        from wallpaper w inner join user_like ul on w.id = ul.wallpaper_id
+        where ul.user_id = #{userId}
+        order by ul.create_time desc
+    </select>
+
+</mapper>

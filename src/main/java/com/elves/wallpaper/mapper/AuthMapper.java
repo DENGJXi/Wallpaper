@@ -14,11 +14,18 @@ public interface AuthMapper {
      */
     @Select("select * from user where username = #{username}")
     User getByUsername(String username);
-
+    /**
+     * 根据邮箱查询用户
+     * @param email 邮箱
+     * @return  user
+     */
+    @Select("select * from user where email = #{email}")
+    User getByEmail(String email);
     /**
      * 插入数据
      * @param user
      * @return
      */
     int insert(User user);
+
 }

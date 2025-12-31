@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserLoginVo {
+public class UserLoginResp {
     private String username;    //  用户名
     private String avatar;      //  头像
     private String nickname;    //  昵称

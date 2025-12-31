@@ -1,21 +1,15 @@
-package com.elves.wallpaper.model;
+package com.elves.wallpaper.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserResp {
     private Long id;                    //用户UID
-    private String username;            //账号
-    private String password;            //密码
     private String nickname;            //用户昵称
     private String avatar;              //用户头像地址
     private String bio;                 //用户简介
-    private String email;               //用户邮箱
-    private LocalDateTime createTime;   //创建时间
 }

@@ -12,6 +12,8 @@
         <result property="password" column="password"/>
         <result property="avatar" column="avatar"/>
         <result property="nickname" column="nickname"/>
+        <result property="bio"  column="bio"/>
+        <result property="email" column="email"/>
         <result property="createTime" column="create_time"/>
     </resultMap>
 
@@ -19,5 +21,6 @@
         insert into user(username,password,nickname,avatar)
         values(#{username}, #{password}, #{nickname}, #{avatar})
     </insert>
+
 
 </mapper>
