@@ -1,10 +1,5 @@
 server:
   port: 8080
-  servlet:
-    encoding:
-      charset: UTF-8
-      force: true
-      enabled: true
 
 spring:
   application:
@@ -47,3 +42,7 @@ mybatis:
 elves:
   jwt:
     SIGN_KEY: elveswallpaperwebproject1145143502345451454352185
+
+unsplash:
+  access-key: '_z_Lx0kaVv0_Qr454c98kKLTJqrdP-D8UuW3-pe_s8A'
+  secret-key: 'cfc1ZcsRGMJE9iUP2N-CAz6MWy05yCmKlp74W5u1ppg'

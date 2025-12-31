@@ -16,6 +16,14 @@
         <result property="fileUrl" column="file_url"/>
         <result property="hits" column="hits"/>
         <result property="createTime" column="create_time"/>
+        <result property="unsplashId" column="unsplash_id"/>
+        <result property="photographer" column="photographer"/>
+        <result property="photographerUrl" column="photographer_url"/>
+        <result property="downloadUrl" column="download_url"/>
+        <result property="sourceUrl" column="source_url"/>
+        <result property="width" column="width"/>
+        <result property="height" column="height"/>
+        <result property="color" column="color"/>
     </resultMap>
 
     <update id="updateHitCount">
@@ -38,5 +46,20 @@
         FROM wallpaper
     </select>
 
+    <select id="searchByKey" resultType="com.elves.wallpaper.model.Wallpaper">
+        select * from wallpaper
+        where title LIKE concat('%',#{keyword},'%') or category LIKE concat('%',#{keyword},'%')
+    </select>
+
+    <!-- 插入新壁纸 -->
+    <insert id="insertWallpaper" parameterType="com.elves.wallpaper.model.Wallpaper">
+        INSERT INTO wallpaper (
+            title, description, category, thumbnail_url, file_url, hits, create_time,
+            unsplash_id, photographer, photographer_url, download_url, source_url, width, height, color
+        ) VALUES (
+            #{title}, #{description}, #{category}, #{thumbnailUrl}, #{fileUrl}, #{hits}, #{createTime},
+            #{unsplashId}, #{photographer}, #{photographerUrl}, #{downloadUrl}, #{sourceUrl}, #{width}, #{height}, #{color}
+        )
+    </insert>
 
 </mapper>

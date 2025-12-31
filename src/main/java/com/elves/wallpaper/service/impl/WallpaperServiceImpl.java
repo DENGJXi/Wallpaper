@@ -9,6 +9,7 @@ import com.elves.wallpaper.utils.SecurityUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,12 @@ public class WallpaperServiceImpl implements WallpaperService {
     private WallpaperMapper wallpaperMapper;
     @Autowired
     private UserLikeMapper userLikeMapper;
+
+    @Value("${unsplash.access-key}")
+    private String accessKey;
+
+    @Value("${unsplash.secret-key}")
+    private String secretKey;
 
     /**
      * 获取所有壁纸
@@ -37,7 +44,6 @@ public class WallpaperServiceImpl implements WallpaperService {
 
         return PageResult.of(pageInfo);
     }
-
     /**
      * 查询当前用户点赞的壁纸
      * @param page      当前页数
@@ -53,6 +59,16 @@ public class WallpaperServiceImpl implements WallpaperService {
         List<Wallpaper> myLikes = userLikeMapper.findMyLikes(userId);
         //  封装返回
         return PageResult.of(new PageInfo<>(myLikes));
+    }
+
+    @Override
+    public PageResult<Wallpaper> search(int page, int size, String keyword) {
+        //  开启分页
+        PageHelper.startPage(page, size);
+        //  查询数据
+        List<Wallpaper> result = wallpaperMapper.searchByKey(keyword);
+        //  封装返回
+        return PageResult.of(new PageInfo<>(result));
     }
 
 

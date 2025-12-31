@@ -1,13 +1,23 @@
 package com.elves.wallpaper.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.elves.wallpaper.common.PageResult;
 import com.elves.wallpaper.common.Result;
+import com.elves.wallpaper.dto.WallpaperSearchReq;
 import com.elves.wallpaper.model.Wallpaper;
+import com.elves.wallpaper.service.UnsplashService;
 import com.elves.wallpaper.service.UserLikeService;
 import com.elves.wallpaper.service.WallpaperService;
+
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 
 @Slf4j
@@ -19,6 +29,8 @@ public class WallpaperController {
     private WallpaperService wallpaperService;
     @Autowired
     private UserLikeService userLikeService;
+    @Autowired
+    private UnsplashService unsplashService;
 
     /**
      * 分页查询壁纸列表
@@ -31,7 +43,18 @@ public class WallpaperController {
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size
     ){
+        log.info("分页查询壁纸 - page: {}, size: {}", page, size);
         PageResult<Wallpaper> pageResult = wallpaperService.findAll(page, size);
+        log.info("分页查询结果 - total: {}, records size: {}", pageResult.getTotal(), pageResult.getRecords().size());
+        return Result.success(pageResult);
+    }
+    @GetMapping("/search")
+    public Result<PageResult<Wallpaper>> search(WallpaperSearchReq req) {
+        PageResult<Wallpaper> pageResult = wallpaperService.search(
+                req.getPage(),
+                req.getSize(),
+                req.getKeyword()
+        );
         return Result.success(pageResult);
     }
 
@@ -59,6 +82,38 @@ public class WallpaperController {
     public Result toggleLike(@PathVariable("wallpaperId") Long wallpaperId) { // 改用 @PathVariable
         boolean isLiked = userLikeService.toggleLike(wallpaperId);
         return Result.success(isLiked);
+    }
+
+    /**
+     * 从Unsplash导入壁纸数据
+     * @param keyword   搜索关键词
+     * @param page      页码（默认1）
+     * @param perPage   每页数量（默认30）
+     * @return  导入成功的数量
+     */
+    @PostMapping("/import/search")
+    @GetMapping("/import/search")
+    public Result<Integer> importFromUnsplashSearch(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "30") int perPage
+    ) {
+        int count = unsplashService.importWallpapersFromUnsplash(keyword, page, perPage);
+        return Result.success(count);
+    }
+
+    /**
+     * 从Unsplash导入随机壁纸
+     * @param count 导入数量（默认10）
+     * @return  导入成功的数量
+     */
+    @PostMapping("/import/random")
+    @GetMapping("/import/random")
+    public Result<Integer> importRandomWallpapers(
+            @RequestParam(defaultValue = "10") int count
+    ) {
+        int successCount = unsplashService.importRandomWallpapers(count);
+        return Result.success(successCount);
     }
 
 }
