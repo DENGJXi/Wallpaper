@@ -4,6 +4,7 @@ import com.elves.wallpaper.dto.UserPwdResetReq;
 import com.elves.wallpaper.dto.UserPwdChangeReq;
 import com.elves.wallpaper.dto.UserUpdateReq;
 import com.elves.wallpaper.vo.UserResp;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
     /**
@@ -24,4 +25,12 @@ public interface UserService {
      * @param userPwdResetReq 用户忘记密码DTO
      */
     void resetPwd(UserPwdResetReq userPwdResetReq);
+
+    /**
+     * 获取当前用户信息
+     * @return UserResp
+     */
+    UserResp getCurrentUserInfo();
+
+    String uploadAvatar(MultipartFile file);
 }

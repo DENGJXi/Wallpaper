@@ -109,7 +109,15 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.2.5.Final</version> </dependency>
+            <version>4.2.5.Final</version>
+        </dependency>
+
+        <!--   阿里云oss     -->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>3.17.4</version>
+        </dependency>
     </dependencies>
 
     <build>

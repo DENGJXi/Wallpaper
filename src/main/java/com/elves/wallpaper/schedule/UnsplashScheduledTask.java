@@ -36,15 +36,15 @@ public class UnsplashScheduledTask {
     }
     
     /**
-     * 每天下午2点执行（搜索热门关键词）
-     * cron表达式: "0 0 14 * * ?" 表示每天14:00:00执行
+     * 每天下午3点半执行（搜索热门关键词）
+     * cron表达式: "0 30 15 * * ?" 表示每天15:30:00执行
      */
-    @Scheduled(cron = "0 0 14 * * ?")
+    @Scheduled(cron = "0 53 15 * * ?")
     public void importPopularWallpapersDaily() {
         log.info("========== 定时任务开始：导入热门壁纸 ==========");
         try {
             // 导入热门关键词的壁纸
-            String[] keywords = {"landscape", "nature", "city", "abstract"};
+            String[] keywords = {"mountain", "ocean", "sunset", "architecture"};
             int totalCount = 0;
             
             for (String keyword : keywords) {

@@ -7,13 +7,13 @@ import com.elves.wallpaper.dto.UserUpdateReq;
 import com.elves.wallpaper.service.UserService;
 import com.elves.wallpaper.vo.UserResp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import static com.elves.wallpaper.constant.MessageConstant.EMPTY_FILE;
 
 @RestController
-@RequestMapping("api/user")
+@RequestMapping("/api/user")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -21,6 +21,19 @@ public class UserController {
     @PutMapping
     public Result<UserResp> uploadProfile(@RequestBody UserUpdateReq userUpdateReq) {
         UserResp userResp = userService.uploadProfile(userUpdateReq);
+        return Result.success(userResp);
+    }
+    @PutMapping("/avatar")
+    public Result<String> uploadAvatar(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return Result.error(EMPTY_FILE);
+        }
+        String avatarUrl = userService.uploadAvatar(file);
+        return  Result.success(avatarUrl);
+    }
+    @GetMapping
+    public Result<UserResp> getCurrentUserInfo(){
+        UserResp userResp = userService.getCurrentUserInfo();
         return Result.success(userResp);
     }
 

@@ -6,16 +6,24 @@ import com.elves.wallpaper.dto.UserPwdChangeReq;
 import com.elves.wallpaper.dto.UserUpdateReq;
 import com.elves.wallpaper.mapper.UserMapper;
 import com.elves.wallpaper.model.User;
+import com.elves.wallpaper.model.Wallpaper;
 import com.elves.wallpaper.service.AuthService;
 import com.elves.wallpaper.service.UserService;
+import com.elves.wallpaper.utils.OssUtil;
 import com.elves.wallpaper.utils.SecurityUtils;
 import com.elves.wallpaper.vo.UserResp;
 import cn.hutool.core.bean.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.util.UUID;
+
 import static com.elves.wallpaper.constant.MessageConstant.*;
 
 @Service
@@ -29,6 +37,8 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private OssUtil ossUtil;
     /**
      * 更新用户资料
      * @param userUpdateReq 用户详情DTO
@@ -102,6 +112,33 @@ public class UserServiceImpl implements UserService {
         String codeKey = VERIFY_CODE_RESET_PREFIX + userPwdResetReq.getEmail();
         stringRedisTemplate.delete(codeKey);
     }
+
+    @Override
+    public UserResp getCurrentUserInfo() {
+        Long userId = SecurityUtils.getCurrentUserId();
+        User user = userMapper.getUserById(userId);
+        UserResp userResp = new UserResp();
+        BeanUtil.copyProperties(user,userResp);
+        return userResp;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String uploadAvatar(MultipartFile file) {
+        String fileUrl = ossUtil.uploadFile(file,"avatar");
+        Long userId = SecurityUtils.getCurrentUserId();
+
+        User user = new User();
+        user.setAvatar(fileUrl);
+        user.setId(userId);
+
+        int updateRows = userMapper.updateUser(user);
+        if (updateRows != 1) {
+            throw new RuntimeException(UPDATE_FILED);
+        }
+        return fileUrl;
+    }
+
     /**
      * 验证密码格式
      * @param newPassword           新密码

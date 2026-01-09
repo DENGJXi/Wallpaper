@@ -1,18 +1,21 @@
 package com.elves.wallpaper.service.impl;
 
-import com.elves.wallpaper.common.PageResult;
-import com.elves.wallpaper.mapper.UserLikeMapper;
-import com.elves.wallpaper.mapper.WallpaperMapper;
-import com.elves.wallpaper.model.Wallpaper;
-import com.elves.wallpaper.service.WallpaperService;
-import com.elves.wallpaper.utils.SecurityUtils;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.elves.wallpaper.common.PageResult;
+import com.elves.wallpaper.dto.WallpaperUploadReq;
+import com.elves.wallpaper.mapper.UserLikeMapper;
+import com.elves.wallpaper.mapper.WallpaperMapper;
+import com.elves.wallpaper.model.Wallpaper;
+import com.elves.wallpaper.service.WallpaperService;
+import com.elves.wallpaper.utils.OssUtil;
+import com.elves.wallpaper.utils.SecurityUtils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 @Service
 public class WallpaperServiceImpl implements WallpaperService {
@@ -26,6 +29,8 @@ public class WallpaperServiceImpl implements WallpaperService {
 
     @Value("${unsplash.secret-key}")
     private String secretKey;
+    @Autowired
+    private OssUtil ossUtil;
 
     /**
      * 获取所有壁纸
@@ -69,6 +74,21 @@ public class WallpaperServiceImpl implements WallpaperService {
         List<Wallpaper> result = wallpaperMapper.searchByKey(keyword);
         //  封装返回
         return PageResult.of(new PageInfo<>(result));
+    }
+
+    @Override
+    public void wallpaperUpload(WallpaperUploadReq wallpaperUploadReq) {
+        String fileUrl = ossUtil.uploadFile(wallpaperUploadReq.getFile());
+
+        Wallpaper wallpaper = new Wallpaper();
+        wallpaper.setFileUrl(fileUrl);
+        // m_lfit: 等比缩放，限定在指定w与h的矩形内的最大图片，不会裁剪
+        wallpaper.setThumbnailUrl(fileUrl+"?x-oss-process=image/resize,m_lfit,w_400");
+        wallpaper.setTitle(wallpaperUploadReq.getTitle());
+        wallpaper.setDescription(wallpaperUploadReq.getDescription());
+        wallpaper.setCategory((wallpaperUploadReq.getCategory()));
+
+        wallpaperMapper.insertWallpaper(wallpaper);
     }
 
 

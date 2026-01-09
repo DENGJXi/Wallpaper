@@ -3,6 +3,7 @@ package com.elves.wallpaper.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.elves.wallpaper.common.PageResult;
 import com.elves.wallpaper.common.Result;
 import com.elves.wallpaper.dto.WallpaperSearchReq;
+import com.elves.wallpaper.dto.WallpaperUploadReq;
 import com.elves.wallpaper.model.Wallpaper;
 import com.elves.wallpaper.service.UnsplashService;
 import com.elves.wallpaper.service.UserLikeService;
@@ -114,6 +116,17 @@ public class WallpaperController {
     ) {
         int successCount = unsplashService.importRandomWallpapers(count);
         return Result.success(successCount);
+    }
+
+    /**
+     * 用户自行上传壁纸
+     * @param wallpaperUploadReq  上传壁纸dto
+     * @return  是否上传成功
+     */
+    @PostMapping("/upload")
+    public Result wallpaperUpload(@ModelAttribute WallpaperUploadReq wallpaperUploadReq){
+        wallpaperService.wallpaperUpload(wallpaperUploadReq);
+        return Result.success();
     }
 
 }

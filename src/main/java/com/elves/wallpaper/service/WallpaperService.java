@@ -1,6 +1,7 @@
 package com.elves.wallpaper.service;
 
 import com.elves.wallpaper.common.PageResult;
+import com.elves.wallpaper.dto.WallpaperUploadReq;
 import com.elves.wallpaper.model.Wallpaper;
 
 public interface WallpaperService {
@@ -28,4 +29,11 @@ public interface WallpaperService {
      * @return          分页结果
      */
     PageResult<Wallpaper> search(int page, int size, String keyword);
+
+    /**
+     * 用户上传壁纸
+     * @param wallpaperUploadReq 上传壁纸dto
+     * @return  上传成功或失败
+     */
+    void wallpaperUpload(WallpaperUploadReq wallpaperUploadReq);
 }

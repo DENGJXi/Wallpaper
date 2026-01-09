@@ -17,5 +17,6 @@ public class MessageConstant {
     public static final String VERIFY_CODE_CHANGE_PREFIX = "auth:verify_code_change:";     // 用于存储修改密码的验证码
     public static final String PWD_RESET_TOKEN_PREFIX = "auth:reset_token_value:";           // 用于存储重置令牌值
     public static final String TOKEN_INVALID_OR_EXPIRED = "重置令牌无效或已过期";
+    public static final String EMPTY_FILE = "上传文件不能为空";
 
 }

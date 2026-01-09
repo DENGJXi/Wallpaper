@@ -51,19 +51,26 @@ public class UnsplashServiceImpl implements UnsplashService {
                 return 0;
             }
             
+            log.info("Unsplash API返回了 {} 张图片", response.getResults().length);
+            
             int successCount = 0;
+            int duplicateCount = 0;
             for (UnsplashImageDTO imageDto : response.getResults()) {
                 try {
                     Wallpaper wallpaper = convertDtoToWallpaper(imageDto, keyword);
                     wallpaperMapper.insertWallpaper(wallpaper);
                     successCount++;
                     log.info("成功导入壁纸: {}", wallpaper.getTitle());
+                } catch (org.springframework.dao.DuplicateKeyException e) {
+                    // 数据库唯一约束冲突（重复数据）
+                    log.debug("壁纸已存在，跳过: {}", imageDto.getId());
+                    duplicateCount++;
                 } catch (Exception e) {
-                    log.error("导入单个壁纸失败: {}", imageDto.getId(), e);
+                    log.error("导入单个壁纸失败 [ID: {}]: {}", imageDto.getId(), e.getMessage(), e);
                 }
             }
             
-            log.info("本次导入完成，成功导入 {} 张壁纸", successCount);
+            log.info("本次导入完成，成功导入 {} 张壁纸，跳过重复 {} 张", successCount, duplicateCount);
             return successCount;
             
         } catch (Exception e) {
