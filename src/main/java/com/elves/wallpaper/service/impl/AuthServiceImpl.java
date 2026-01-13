@@ -218,14 +218,7 @@ public class AuthServiceImpl implements AuthService {
         }
         String key = prefix + email;
         String redisCode = (String) stringRedisTemplate.opsForValue().get(key);
-
-        // 防御性编程：Redis 中的数据可能包含 \x00 填充字符，使用正则表达式提取数字部分
-        if (redisCode != null) {
-            redisCode = redisCode.replaceAll("[^0-9]", "");
-        }
-
         String cleanCode = code.trim().replaceAll("[^0-9]", "");
-        log.info("验证码验证 - email: {}, 前端code: '{}', Redis中code: '{}', key: {}", email, cleanCode, redisCode, key);
 
         if (redisCode == null || !redisCode.equals(cleanCode)) {
             log.error("验证码验证失败: email={}, type={}", email, prefix);

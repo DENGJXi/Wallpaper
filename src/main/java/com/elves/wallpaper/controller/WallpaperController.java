@@ -94,7 +94,6 @@ public class WallpaperController {
      * @return  导入成功的数量
      */
     @PostMapping("/import/search")
-    @GetMapping("/import/search")
     public Result<Integer> importFromUnsplashSearch(
             @RequestParam String keyword,
             @RequestParam(defaultValue = "1") int page,
@@ -110,7 +109,6 @@ public class WallpaperController {
      * @return  导入成功的数量
      */
     @PostMapping("/import/random")
-    @GetMapping("/import/random")
     public Result<Integer> importRandomWallpapers(
             @RequestParam(defaultValue = "10") int count
     ) {
