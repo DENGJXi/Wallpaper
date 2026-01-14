@@ -50,6 +50,19 @@
         select * from wallpaper
         where title LIKE concat('%',#{keyword},'%') or category LIKE concat('%',#{keyword},'%')
     </select>
+    <select id="rankListByHits" resultType="com.elves.wallpaper.model.Wallpaper">
+        SELECT
+            id,
+            title,
+            description,
+            category,
+            thumbnail_url,
+            file_url,
+            hits,
+            create_time
+        FROM wallpaper
+        order by hits desc
+    </select>
 
     <!-- 插入新壁纸 -->
     <insert id="insertWallpaper" parameterType="com.elves.wallpaper.model.Wallpaper">

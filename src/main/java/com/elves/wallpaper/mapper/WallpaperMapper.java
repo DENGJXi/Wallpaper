@@ -34,4 +34,10 @@ public interface WallpaperMapper {
      * @param wallpaper 壁纸对象
      */
     void insertWallpaper(Wallpaper wallpaper);
+
+    /**
+     * 根据点赞数排序壁纸
+     * @return
+     */
+    List<Wallpaper> rankListByHits();
 }

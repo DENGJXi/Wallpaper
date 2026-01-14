@@ -1,5 +1,7 @@
 package com.elves.wallpaper.service;
 
+import java.util.List;
+
 import com.elves.wallpaper.common.PageResult;
 import com.elves.wallpaper.dto.WallpaperUploadReq;
 import com.elves.wallpaper.model.Wallpaper;
@@ -36,4 +38,7 @@ public interface WallpaperService {
      * @return  上传成功或失败
      */
     void wallpaperUpload(WallpaperUploadReq wallpaperUploadReq);
+
+    PageResult<Wallpaper> getRankList(int page, int size);
+
 }

@@ -18,7 +18,7 @@ import com.elves.wallpaper.model.Wallpaper;
 import com.elves.wallpaper.service.UnsplashService;
 import com.elves.wallpaper.service.UserLikeService;
 import com.elves.wallpaper.service.WallpaperService;
-
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -126,5 +126,16 @@ public class WallpaperController {
         wallpaperService.wallpaperUpload(wallpaperUploadReq);
         return Result.success();
     }
-
+    /**
+     * 壁纸排行榜
+     * @return 排行榜壁纸列表
+     */
+    @GetMapping("/ranklist")
+    public Result<PageResult<Wallpaper>> rankList(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size
+    ){
+        PageResult<Wallpaper> pageResult = wallpaperService.getRankList(page,size);
+        return Result.success(pageResult);
+    }
 }

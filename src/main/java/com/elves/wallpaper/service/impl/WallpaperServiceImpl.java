@@ -1,5 +1,6 @@
 package com.elves.wallpaper.service.impl;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +90,14 @@ public class WallpaperServiceImpl implements WallpaperService {
         wallpaper.setCategory((wallpaperUploadReq.getCategory()));
 
         wallpaperMapper.insertWallpaper(wallpaper);
+    }
+
+    @Override
+    public PageResult<Wallpaper> getRankList(int page, int size) {
+        PageHelper.startPage(page, size);
+        List<Wallpaper> list = wallpaperMapper.rankListByHits();
+        PageInfo<Wallpaper> pageInfo = new PageInfo<>(list);
+        return PageResult.of(pageInfo);
     }
 
 
